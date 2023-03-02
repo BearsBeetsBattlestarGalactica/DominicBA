@@ -63,6 +63,15 @@ public class Steering : MonoBehaviour
 
     private void Update()
     {
+
+        
+        
+        LogitechGSDK.LogiControllerPropertiesData actualProperties = new LogitechGSDK.LogiControllerPropertiesData();
+        LogitechGSDK.DIJOYSTATE2ENGINES rec;
+        rec = LogitechGSDK.LogiGetStateUnity(0);
+        Debug.Log(rec.lY);
+      
+        
         if (m_target)
         {
             m_offset.position = m_target.position;
@@ -100,7 +109,7 @@ public class Steering : MonoBehaviour
         }
 
 
-        if (m_leftController.activateAction.action.ReadValue<float>() > 0.0f)
+        if (m_leftController.activateAction.action.ReadValue<float>() > 0.0f| rec.lY < 0)
         {
             Debug.Log("Brake!");
             m_FLwheel.brakeTorque = m_breakForce;
@@ -116,7 +125,7 @@ public class Steering : MonoBehaviour
             m_BRwheel.brakeTorque = 0;
         }
 
-        if (m_rightController.activateAction.action.ReadValue<float>() > 0.0f)
+        if (m_rightController.activateAction.action.ReadValue<float>() > 0.0f | rec.lY > 500)
         {
             m_BLwheel.motorTorque = m_accelerationForce;
             m_BRwheel.motorTorque = m_accelerationForce;
